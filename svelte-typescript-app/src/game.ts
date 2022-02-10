@@ -1,14 +1,14 @@
-type Multiplier = number
+type Multiplier = 2 | 3
 type BoardPiece = "empty" | "center" | Multiplier
 interface Coord {
     x: number
     y: number
 }
 const Colors: { "empty": string, "center": string, 2: string, 3: string } = {
-    "empty": "#FFFFFF",
-    "center": "#FFC0CB",
-    2: "#FF0000",
-    3: "#0000FF"
+    "empty": "#E9D8A6",
+    "center": "#94D2BD",
+    2: "#AE2012",
+    3: "#005F73"
 }
 
 function initBoard(board: BoardPiece[][]) {
@@ -89,6 +89,18 @@ class Game {
     get coloredBoard() {
         return this.board.map(row => row.map(piece => Colors[piece]))
     }
+    multiplierToWord(location: Coord) {
+        const multiplier = this.board[location.y][location.x]
+        if (multiplier === "center" || multiplier === "empty") return null
+        switch (multiplier) {
+            case 2:
+                return "Double"
+            case 3:
+                return "Triple"
+            default:
+                return null
+        }
+    }
 
     constructor() {
         /* ------------------------ Setting up initial board ------------------------ */
@@ -98,8 +110,6 @@ class Game {
         this.board = [...Array(boardSize)].map(() => [...Array(boardSize)].map(() => "empty"))
         this.board[this.boardCenter.y][this.boardCenter.x] = "center"
         initBoard(this.board)
-
-        this.log()
     }
 
     /**
