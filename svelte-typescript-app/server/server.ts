@@ -1,15 +1,26 @@
 import { Server } from "socket.io"
+import { Ids } from "./ids"
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "./types"
+import { Usernames } from "./usernames"
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(3000, { cors: { origin: "*" } })
 
-/* -------------------------------- Usernames ------------------------------- */
-const usernames = new Set<string>()
-const socketUsernames = new Map<string, string>()
-function usernameCheck(username: string) {
-    if (usernames.has(username)) return "Username taken"
-    if (username.length > 20) return "Username too long"
-    if (/\s/g.test(username)) return "Username contains spaces"
-    usernames.add(username)
-    return true
+const usernames = new Usernames()
+const ids = new Ids()
+
+enum GameStates {
+    WAITING, GAME, END
 }
+class Game {
+    id: string
+    state: GameStates
+
+    constructor() {
+        this.id = ""
+        this.state = GameStates.WAITING
+    }
+}
+
+io.on("connection", (socket) => {
+    console.log(`${socket.id} connected`)
+})
