@@ -18,7 +18,7 @@ function initBoard(board: BoardPiece[][]) {
                 return 2
             case 1:
                 return 3
-            case 7:
+            case 6:
                 return 3
             default:
                 return 2
