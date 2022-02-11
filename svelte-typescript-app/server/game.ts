@@ -2,6 +2,8 @@ import { Server, Socket } from "socket.io"
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "./types"
 import { usernames } from "./usernames"
 
+// Maybe add a web ui to track logs, games, and more
+
 class Ids {
     adjectives: string[]
     nouns: string[]
@@ -87,4 +89,3 @@ export {
     getGameBySocketId,
     games
 }
-

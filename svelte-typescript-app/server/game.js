@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.games = exports.getGameBySocketId = exports.Game = exports.GameStates = void 0;
 const usernames_1 = require("./usernames");
+// Maybe add a web ui to track logs, games, and more
 class Ids {
     adjectives;
     nouns;
