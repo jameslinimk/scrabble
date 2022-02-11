@@ -1,13 +1,15 @@
 class Usernames {
-    usernames: Set<string>
-    socketUsernames: Map<string, string>
+    usernames: Map<string, string>
 
     constructor() {
-        this.usernames = new Set()
-        this.socketUsernames = new Map()
+        this.usernames = new Map()
     }
 
     /* -------------------------------- Usernames ------------------------------- */
+    getUsername(id: string) {
+        return this.usernames.get(id)
+    }
+
     usernameCheck(username: string) {
         if (username.length > 20) return "Username too long"
         if (/\s/g.test(username)) return "Username contains spaces"
@@ -15,20 +17,24 @@ class Usernames {
         return true
     }
 
-    setUsername(socketId: string, username: string) {
-        this.usernames.add(username)
-        this.socketUsernames.set(socketId, username)
+    setUsername(id: string, username: string) {
+        const valid = this.usernameCheck(username)
+        if (valid !== true) return valid
+        this.usernames.set(id, username)
+        return true
     }
 
-    removeUsername(socketId: string) {
-        const username = this.socketUsernames.get(socketId)
+    removeUsername(id: string) {
+        const username = this.getUsername(id)
         if (!username) return "No username"
-        this.usernames.delete(username)
-        this.socketUsernames.delete(socketId)
+
+        this.usernames.delete(id)
+        return true
     }
 }
+const usernames = new Usernames()
 
 export {
-    Usernames
+    usernames
 }
 

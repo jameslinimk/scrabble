@@ -1,10 +1,20 @@
 <script lang="ts">
 	import { Game } from "./game";
+	import { ioWritable } from "./io";
+	import Testing from "./Testing.svelte";
 
 	const game = new Game();
+
+	let io = $ioWritable;
+	setInterval(() => {
+		const start = Date.now();
+		io.volatile.emit("ping", () => (game.latency = Date.now() - start));
+	}, 5000);
 </script>
 
 <main>
+	<Testing />
+
 	<div
 		class="game"
 		style="--row-length: {game.board.length}; --column-length: {game.board

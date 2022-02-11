@@ -1,18 +1,39 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const socket_io_1 = require("socket.io");
+const game_1 = require("./game");
+const usernames_1 = require("./usernames");
 const io = new socket_io_1.Server(3000, { cors: { origin: "*" } });
-/* -------------------------------- Usernames ------------------------------- */
-const usernames = new Set();
-const socketUsernames = new Map();
-function usernameCheck(username) {
-    if (usernames.has(username))
-        return "Username taken";
-    if (username.length > 20)
-        return "Username too long";
-    if (/\s/g.test(username))
-        return "Username contains spaces";
-    usernames.add(username);
-    return true;
-}
+console.log("Starting server");
+/* --------------------------------- Testing -------------------------------- */
+const testRoom = new game_1.Game(io);
+testRoom.id = "test";
+game_1.games.push(testRoom);
+let testUsernames = 0;
+io.on("connection", (socket) => {
+    usernames_1.usernames.setUsername(socket.id, `test#${testUsernames}`);
+    console.log(`test#${testUsernames} connected`);
+    testUsernames++;
+    socket.on("setUsername", (username, callback) => {
+        console.log(usernames_1.usernames.getUsername(socket.id), "changing to", username);
+        const valid = usernames_1.usernames.setUsername(socket.id, username);
+        console.log(" - ", valid);
+        callback((valid === true) ? !valid : valid);
+    });
+    socket.on("joinRoom", (id, callback) => {
+        console.log(usernames_1.usernames.getUsername(socket.id), "joining test");
+        // Change later
+        const valid = testRoom.addSocket(socket);
+        console.log(" - ", valid);
+        callback(false);
+    });
+    socket.on("ping", (callback) => {
+        callback();
+    });
+    socket.on("disconnect", () => {
+        console.log(usernames_1.usernames.getUsername(socket.id), "left");
+        usernames_1.usernames.removeUsername(socket.id);
+        (0, game_1.getGameBySocketId)(socket.id)?.removeSocket(socket);
+    });
+});
 //# sourceMappingURL=server.js.map

@@ -102,6 +102,9 @@ class Game {
         }
     }
 
+    /* ---------------------------- Multiplayer stuff --------------------------- */
+    latency: number
+
     constructor() {
         /* ------------------------ Setting up initial board ------------------------ */
         const boardSize = 15
@@ -110,6 +113,9 @@ class Game {
         this.board = [...Array(boardSize)].map(() => [...Array(boardSize)].map(() => "empty"))
         this.board[this.boardCenter.y][this.boardCenter.x] = "center"
         initBoard(this.board)
+
+        /* ------------------------------- Multiplayer ------------------------------ */
+        this.latency = 0
     }
 
     /**
@@ -123,3 +129,4 @@ class Game {
 export {
     Game
 }
+
