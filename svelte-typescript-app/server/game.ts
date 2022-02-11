@@ -29,6 +29,7 @@ enum GameStates {
 }
 interface ExportedGame {
     usernames: (string | undefined)[]
+    id: string
 }
 class Game {
     id: string
@@ -43,7 +44,8 @@ class Game {
 
     exportData(): ExportedGame {
         return {
-            usernames: this.clientUsernames
+            usernames: this.clientUsernames,
+            id: this.id
         }
     }
 
@@ -60,7 +62,6 @@ class Game {
         if (this.clients.size !== 0) this.io.to(this.id).emit("userJoin", username)
 
         socket.join(this.id)
-        socket.emit("gameData", this.exportData())
         return true
     }
 

@@ -41,7 +41,8 @@ class Game {
     }
     exportData() {
         return {
-            usernames: this.clientUsernames
+            usernames: this.clientUsernames,
+            id: this.id
         };
     }
     constructor(io) {
@@ -60,7 +61,6 @@ class Game {
         if (this.clients.size !== 0)
             this.io.to(this.id).emit("userJoin", username);
         socket.join(this.id);
-        socket.emit("gameData", this.exportData());
         return true;
     }
     removeSocket(socket) {

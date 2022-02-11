@@ -13,7 +13,7 @@ class Usernames {
     usernameCheck(username: string) {
         if (username.length > 20) return "Username too long"
         if (/\s/g.test(username)) return "Username contains spaces"
-        if (this.usernames.has(username)) return "Username taken"
+        if (Array.from(this.usernames.values()).includes(username)) return "Username taken"
         return true
     }
 

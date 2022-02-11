@@ -1,3 +1,5 @@
+import { writable } from "svelte/store"
+
 type Multiplier = 2 | 3
 type BoardPiece = "empty" | "center" | Multiplier
 interface Coord {
@@ -103,6 +105,8 @@ class Game {
     }
 
     /* ---------------------------- Multiplayer stuff --------------------------- */
+    username?: string
+    gameId?: string
     latency: number
 
     constructor() {
@@ -126,7 +130,10 @@ class Game {
     }
 }
 
+const gameWritable = writable(new Game())
+
 export {
-    Game
+    Game,
+    gameWritable
 }
 

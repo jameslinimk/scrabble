@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
         // Change later
         const valid = testRoom.addSocket(socket)
         console.log(" - ", valid)
-        callback(false)
+        callback(false, testRoom.exportData())
     })
 
     socket.on("ping", (callback) => {

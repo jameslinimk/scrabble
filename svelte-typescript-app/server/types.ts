@@ -7,7 +7,7 @@ interface ServerToClientEvents {
 }
 interface ClientToServerEvents {
     setUsername: (username: string, callback: (error: false | "Username too long" | "Username contains spaces" | "Username taken") => void) => void
-    joinRoom: (id: string, callback: (error: boolean) => void) => void
+    joinRoom: (id: string, callback: (error: boolean, exportedGame: ExportedGame) => void) => void
     ping: (callback: () => void) => void
 }
 interface InterServerEvents { ping: () => void }

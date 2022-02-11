@@ -1,14 +1,15 @@
 <script lang="ts">
-	import { Game } from "./game";
+	import { gameWritable } from "./game";
 	import { ioWritable } from "./io";
 	import Testing from "./Testing.svelte";
-
-	const game = new Game();
 
 	let io = $ioWritable;
 	setInterval(() => {
 		const start = Date.now();
-		io.volatile.emit("ping", () => (game.latency = Date.now() - start));
+		io.volatile.emit(
+			"ping",
+			() => ($gameWritable.latency = Date.now() - start)
+		);
 	}, 5000);
 </script>
 
@@ -17,13 +18,13 @@
 
 	<div
 		class="game"
-		style="--row-length: {game.board.length}; --column-length: {game.board
-			.length};"
+		style="--row-length: {$gameWritable.board
+			.length}; --column-length: {$gameWritable.board.length};"
 	>
-		{#each game.coloredBoard as row, y}
+		{#each $gameWritable.coloredBoard as row, y}
 			{#each row as color, x}
 				<div class="box" style="--color: {color};">
-					{#if game.board[y][x] == "center"}
+					{#if $gameWritable.board[y][x] == "center"}
 						<svg
 							version="1.1"
 							id="Capa_1"
@@ -50,8 +51,8 @@
 								/>
 							</g>
 						</svg>
-					{:else if game.board[y][x] !== "empty"}
-						{game.multiplierToWord({ x, y })} score
+					{:else if $gameWritable.board[y][x] !== "empty"}
+						{$gameWritable.multiplierToWord({ x, y })} score
 					{/if}
 					<!-- <div class="boxMultiplier">3</div> -->
 				</div>
