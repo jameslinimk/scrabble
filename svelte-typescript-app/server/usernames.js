@@ -1,8 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.usernames = void 0;
 class Usernames {
-    usernames;
     constructor() {
         this.usernames = new Map();
     }
@@ -35,5 +31,5 @@ class Usernames {
     }
 }
 const usernames = new Usernames();
-exports.usernames = usernames;
+export { usernames };
 //# sourceMappingURL=usernames.js.map

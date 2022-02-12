@@ -1,5 +1,5 @@
-import { Server, Socket } from "socket.io"
-import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "./types"
+import type { Server, Socket } from "socket.io"
+import type { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "./types"
 import { usernames } from "./usernames"
 
 // Maybe add a web ui to track logs, games, and more
@@ -61,7 +61,7 @@ class Game {
         if (!username) return "No username"
         if (this.clients.has(socket.id)) return "Already in this game"
         if (getGameBySocketId(socket.id)) return "Already in game"
-        if (this.clients.size !== 0) this.io.to(this.id).emit("userJoin", username)
+        if (this.clients.size !== 0) this.userJoin(username)
 
         socket.join(this.id)
         return true
@@ -73,7 +73,20 @@ class Game {
         if (!this.clients.has(socket.id)) return "Not in this game"
 
         socket.leave(this.id)
-        socket.emit("userLeft", username)
+        this.userLeft(username)
+    }
+
+    /* ---------------------------- Server to client ---------------------------- */
+    userJoin(username: string) {
+        this.io.to(this.id).emit("userJoin", username)
+    }
+
+    userLeft(username: string) {
+        this.io.to(this.id).emit("userLeft", username)
+    }
+
+    gameData() {
+        this.io.to(this.id).emit("gameData", this.exportData())
     }
 }
 
@@ -84,8 +97,12 @@ function getGameBySocketId(id: string) {
 
 export {
     GameStates,
-    ExportedGame,
     Game,
     getGameBySocketId,
     games
 }
+export type {
+    ExportedGame
+}
+
+

@@ -9,6 +9,7 @@
   "exclude": [
     "node_modules/*",
     "__sapper__/*",
-    "public/*"
+    "public/*",
+    "server/*"
   ]
 }

@@ -1,26 +1,19 @@
 <script lang="ts">
-	import { gameWritable } from "./game";
-	import { ioWritable } from "./io";
-	import Testing from "./Testing.svelte";
+	import Testing from "./components/Testing.svelte";
+	import { gameWritable } from "./ts/game";
+	import { ioWritable } from "./ts/io";
 
 	let io = $ioWritable;
 	setInterval(() => {
 		const start = Date.now();
-		io.volatile.emit(
-			"ping",
-			() => ($gameWritable.latency = Date.now() - start)
-		);
+		io.volatile.emit("ping", () => ($gameWritable.latency = Date.now() - start));
 	}, 5000);
 </script>
 
 <main>
 	<Testing />
 
-	<div
-		class="game"
-		style="--row-length: {$gameWritable.board
-			.length}; --column-length: {$gameWritable.board.length};"
-	>
+	<div class="game" style="--row-length: {$gameWritable.board.length}; --column-length: {$gameWritable.board.length};">
 		{#each $gameWritable.coloredBoard as row, y}
 			{#each row as color, x}
 				<div class="box" style="--color: {color};">

@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { gameWritable } from "./game";
-    import { ioWritable } from "./io";
+    import { gameWritable } from "../ts/game";
+    import { ioWritable } from "../ts/io";
 
     let io = $ioWritable;
 
@@ -28,7 +28,7 @@
 
     function joinTest() {
         io.emit("joinRoom", "", (error, exportedGame) => {
-            if (error) return console.error(error);
+            if (error || !exportedGame) return console.error(error);
             console.log("joined game", exportedGame);
             $gameWritable.gameId = exportedGame.id;
         });

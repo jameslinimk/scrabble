@@ -20,16 +20,14 @@ io.on("connection", (socket) => {
     socket.on("setUsername", (username, callback) => {
         console.log(usernames.getUsername(socket.id), "changing to", username)
         const valid = usernames.setUsername(socket.id, username)
-        console.log(" - ", valid)
-        callback((valid === true) ? !valid : valid)
+        callback((valid === true) ? false : valid)
     })
 
     socket.on("joinRoom", (id, callback) => {
         console.log(usernames.getUsername(socket.id), "joining test")
         // Change later
         const valid = testRoom.addSocket(socket)
-        console.log(" - ", valid)
-        callback(false, testRoom.exportData())
+        callback((valid === true) ? false : valid, (valid === true) ? testRoom.exportData() : undefined)
     })
 
     socket.on("ping", (callback) => {
